@@ -1,6 +1,6 @@
 import Header from "./Header";
-import Banner from "./Banner";
-import ProductFeed from "./ProductFeed";
-import CheackOutProduct from "./CheackOutProduct";
+import HeaderItems from "./HeaderItems";
+import Nav from "./Nav";
+import Movies from "./Movies";
 
-export { Header,Banner , ProductFeed,CheackOutProduct}; 
+export { Header, HeaderItems, Nav, Movies };
