@@ -1,17 +1,20 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../utils/api';
 import {HandThumbUpIcon} from '@heroicons/react/24/outline'
+import { useDispatch } from 'react-redux';
+import { fetchId } from '../redux/dataFetch';
 
 function Movies({ value }) {
 
   const [info, setInfo] = useState()
+  const navigate = useNavigate()
   const BaseUrl = 'https://image.tmdb.org/t/p/original'
+  const dispatch = useDispatch()
 
   const fetchData = async () => {
-    const { data } = await axios(`${value || "/movie/now_playing?api_key=49f094204a52eadc5e4928ca558eceeb"}`)
-    console.log('data', data.results)
+    const { data } = await axios(`${value || `/movie/now_playing?api_key=${import.meta.env.VITE_REACT_APP_API_KEY}`}`)
     setInfo(data.results)
   }
 
@@ -23,10 +26,14 @@ function Movies({ value }) {
     }
   }, [value])
   return (
-    <div className='px-5 my-10 sm:grid md:grid-cols-2 xl:grid-cols-3  3xl:flex flex-wrap justify-center'>
+    <>
       {info?.map((item) => (
-        <div key={item.id} className='group cursor-pointer  p-2 transition duration-200 ease-in transform sm:hover:scale-105 hover:z-50'>
-          <img src={`${BaseUrl}${item.backdrop_path}`} alt="imgs" />
+        <div key={item.id} className='group cursor-pointer  p-2 transition duration-200 ease-in transform sm:hover:scale-105 hover:z-50'
+        onClick={(e)=>{navigate(`/details/${item.id}`);
+        dispatch(fetchId(item.id))
+      }}
+        >
+          <img src={`${BaseUrl}${item.poster_path}`} alt="imgs" />
           <div className='p-2'>
             <p className='truncate max-w-md'>{item.overview}</p>
             <h2 className='mt-1 text-2xl text-white transition-all duration-100 ease-in-out group-hover:font-bold' >{item.title || item.original_name}</h2>
@@ -36,7 +43,7 @@ function Movies({ value }) {
           </div>
         </div>
       ))}
-    </div>
+      </>
   )
 }
 

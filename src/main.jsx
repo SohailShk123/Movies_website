@@ -4,12 +4,14 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
+import { store } from './redux/store.js'
+import { Provider } from 'react-redux'
 
 axios.defaults.baseURL = `https://api.themoviedb.org/3`
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <React.StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
       <App />
-    </React.StrictMode>,
-  </BrowserRouter>
+    </BrowserRouter>
+  </Provider>,
 )
